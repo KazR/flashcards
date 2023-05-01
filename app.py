@@ -7,9 +7,13 @@ file_path = "TestCards.xlsx"
 # Load the flashcards from the Excel file
 flashcards = pd.read_excel("data/TestCards.xlsx")
 
-def display_flashcard():
-    # Randomly select a row
-    row = random.choice(flashcards.index)
+def display_flashcard(previous_card=None):
+    # Randomly select a row excluding the previous card
+    if previous_card is not None:
+        rows = flashcards.index[flashcards.index != previous_card]
+        row = random.choice(rows)
+    else:
+        row = random.choice(flashcards.index)
 
     # Get the front and back values from the selected row
     front = flashcards.loc[row, "front"]
@@ -27,9 +31,9 @@ def display_flashcard():
     else:
         print("Wrong! The correct answer is:", back)
 
-    # Display a new flashcard
+    # Display a new flashcard (passing the current card as the previous card)
     print("-------------------")
-    display_flashcard()
+    display_flashcard(row)
 
 # Start the flashcard application
 display_flashcard()
