@@ -10,7 +10,7 @@ flashcards = pd.read_excel(file_path)
 
 # Create a Tkinter window
 window = tk.Tk()
-window.geometry("250x200")  # Set the window size to 400x400
+window.geometry("250x175")  # Set the window size to 400x400
 
 # Declare the back variable as global
 back = ""
@@ -22,10 +22,16 @@ def check_answer():
     user_answer = entry.get().lower()
     if user_answer == back.lower():
         result_label.config(text="Correct!", fg="green")
-        check_button.config(text="Next", command=display_flashcard)
     else:
         result_label.config(text="Wrong! The correct answer is: " + back, fg="red")
-        check_button.config(text="Next", command=display_flashcard)
+
+    check_button.config(text="Next")
+    check_button.unbind('<Return>')
+    check_button.bind('<Return>', handle_next)
+    check_button.focus_set()
+
+def handle_next(event):
+    display_flashcard()
 
 def display_flashcard():
     global back, previous_card
@@ -45,11 +51,14 @@ def display_flashcard():
     front_label.config(text="Front of the card: " + front)
     entry.delete(0, tk.END)
     result_label.config(text="")
-    check_button.config(text="Check Answer", command=check_answer)
-    window.update()
+    check_button.config(text="Check Answer")
+    check_button.unbind('<Return>')
+    check_button.bind('<Return>', handle_check)
+    check_button.focus_set()
+    entry.focus_set()  # Set focus to the entry widget
 
-    # Set focus to the entry widget
-    entry.focus_set()
+def handle_check(event):
+    check_answer()
 
 # Display the front label
 front_label = tk.Label(window, text="Front of the card:")
@@ -59,9 +68,13 @@ front_label.pack(pady=10)
 entry = tk.Entry(window)
 entry.pack(pady=10)
 
-# Button to check the answer
+# Bind the Enter key to the entry widget for both check and next actions
+entry.bind('<Return>', handle_check)
+
+# Button to check the answer or display the next flashcard
 check_button = tk.Button(window, text="Check Answer", command=check_answer)
 check_button.pack(pady=10)
+check_button.bind('<Return>', handle_check)
 
 # Label to display the result
 result_label = tk.Label(window, text="")
