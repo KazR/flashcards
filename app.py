@@ -21,7 +21,6 @@ is_swapped = False
 # Function to check the user's answer and proceed to the next flashcard
 def check_answer():
     global back, is_swapped
-    
     user_answer = entry.get().lower()
     if is_swapped:
         correct_side = front
@@ -29,10 +28,8 @@ def check_answer():
         correct_side = back
     if user_answer == correct_side.lower():
         result_label.config(text="Correct!", fg="green")
-        entry.focus_set() 
     else:
         result_label.config(text="Wrong! The correct answer is: " + correct_side, fg="red")
-        entry.focus_set() 
     check_button.config(text="Next")
     check_button.focus_set()
     check_button.unbind('<Return>')
@@ -100,6 +97,7 @@ def swap_flashcard():
     
 def handle_next(event):
     display_flashcard()
+    entry.focus_set()
 
 # Label to display the result
 result_label = tk.Label(window, text="")
