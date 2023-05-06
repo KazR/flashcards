@@ -18,33 +18,10 @@ previous_card = None
 is_swapped = False
 
 
-# Function to check the user's answer and proceed to the next flashcard
-def check_answer():
-    global back, is_swapped
-    user_answer = entry.get().lower()
-    if is_swapped:
-        correct_side = front
-    else:
-        correct_side = back
-    if user_answer == correct_side.lower():
-        result_label.config(text="Correct!", fg="green")
-    else:
-        result_label.config(text="Wrong! The correct answer is: " + correct_side, fg="red")
-    check_button.config(text="Next")
-    check_button.focus_set()
-    check_button.unbind('<Return>')
-    check_button.bind('<Return>', handle_next)
-    check_button.config(command=display_flashcard)
-
-
-def handle_next(event):
-    display_flashcard()
-
 def display_flashcard():
     global front, back, previous_card
 
     # Randomly select a row
-
     rows = flashcards.index.tolist()
     if previous_card is not None:
         rows.remove(previous_card)
@@ -68,11 +45,43 @@ def display_flashcard():
     check_button.bind('<Return>', handle_check)
     check_button.config(command=check_answer)
     check_button.focus_set()
-    
+
+
+def check_answer():
+    global back, is_swapped
+    user_answer = entry.get().lower()
+    if is_swapped:
+        correct_side = front
+    else:
+        correct_side = back
+    if user_answer == correct_side.lower():
+        result_label.config(text="Correct!", fg="green")
+    else:
+        result_label.config(text="Wrong! The correct answer is: " + correct_side, fg="red")
+    check_button.config(text="Next")
+    check_button.focus_set()
+    check_button.unbind('<Return>')
+    check_button.bind('<Return>', handle_next)
+    check_button.config(command=display_flashcard)
+
+
+def swap_flashcard():
+    global front, back, is_swapped
+    is_swapped = not is_swapped
+    if is_swapped:
+        front_label.config(text="Front of the card: " + back)
+    else:
+        front_label.config(text="Front of the card: " + front)
 
 
 def handle_check(event):
     check_answer()
+
+
+def handle_next(event):
+    display_flashcard()
+    entry.focus_set()
+
 
 # Display the front label
 front_label = tk.Label(window, text="Front of the card:")
@@ -89,18 +98,6 @@ entry.bind('<Return>', handle_check)
 check_button = tk.Button(window, text="Check Answer", command=check_answer)
 check_button.pack(pady=10)
 check_button.bind('<Return>', handle_check)
-
-def swap_flashcard():
-    global front, back, is_swapped
-    is_swapped = not is_swapped
-    if is_swapped:
-        front_label.config(text="Front of the card: " + back)
-    else:
-        front_label.config(text="Front of the card: " + front)
-    
-def handle_next(event):
-    display_flashcard()
-    entry.focus_set()
 
 # Label to display the result
 result_label = tk.Label(window, text="")
