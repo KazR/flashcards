@@ -11,7 +11,7 @@ flashcards = pd.read_excel(file_path)
 
 # Create a Tkinter window
 window = tk.Tk()
-window.geometry("325x325")  # Set the window size to 400x400
+window.geometry("325x350")  # Set the window size to 400x400
 window.config(bg="#A2D2FF")
 
 # Declare the back variable as global
@@ -114,9 +114,11 @@ check_button = tk.Button(window, text="Check Answer", command=check_answer)
 check_button.pack(pady=10)
 check_button.bind('<Return>', handle_check)
 
-# Open file button
-open_button = tk.Button(window, text="Open file", command=load_excel)
-open_button.pack(pady=1)
+# Button to swap the front and back of the flashcard
+swap_button = tk.Button(window, text="Swap", command=swap_flashcard, bg="#FFC8DD", font=("Helvetica, 12"), activebackground="#FFAFCC")
+swap_button.pack(pady=10)
+
+
 
 # Label to display the result
 result_label = tk.Label(window, text="", bg="#A2D2FF")
@@ -126,10 +128,10 @@ result_label.pack(pady=10)
 score_label = tk.Label(window, text="0 / 0", bg="#A2D2FF", font=("Helvetica", 10))
 score_label.pack(pady=10)
 
+# Open file button
+open_button = tk.Button(window, text="Open File", command=swap_flashcard, bg="#FFC8DD", font=("Helvetica, 8"), activebackground="#FFAFCC")
+open_button.pack(pady=1)
 
-# Button to swap the front and back of the flashcard
-swap_button = tk.Button(window, text="Swap", command=swap_flashcard, bg="#FFC8DD", font=("Helvetica, 12"), activebackground="#FFAFCC")
-swap_button.pack(pady=10)
 
 # Start the flashcard application
 display_flashcard()
