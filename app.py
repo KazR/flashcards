@@ -34,6 +34,7 @@ def check_answer():
     check_button.focus_set()
     check_button.unbind('<Return>')
     check_button.bind('<Return>', handle_next)
+    check_button.config(command=display_flashcard)
 
 
 def handle_next(event):
@@ -65,7 +66,9 @@ def display_flashcard():
     check_button.config(text="Check Answer")
     check_button.unbind('<Return>')
     check_button.bind('<Return>', handle_check)
+    check_button.config(command=check_answer)
     check_button.focus_set()
+    
 
 
 def handle_check(event):
