@@ -16,11 +16,12 @@ window.geometry("250x250")  # Set the window size to 400x400
 back = ""
 previous_card = None
 is_swapped = False
+correct_answers = 0
+attempted_answers = 0
 
 
 def display_flashcard():
-    global front, back, previous_card
-
+    global front, back, previous_card, correct_answers, attempted_answers
     # Randomly select a row
     rows = flashcards.index.tolist()
     if previous_card is not None:
@@ -45,24 +46,29 @@ def display_flashcard():
     check_button.bind('<Return>', handle_check)
     check_button.config(command=check_answer)
     check_button.focus_set()
+    # Update the attempted answers counter
+    attempted_answers += 1
 
 
 def check_answer():
-    global back, is_swapped
+    global back, is_swapped, correct_answers
     user_answer = entry.get().lower()
     if is_swapped:
         correct_side = front
     else:
         correct_side = back
     if user_answer == correct_side.lower():
+        correct_answers += 1
         result_label.config(text="Correct!", fg="green")
     else:
         result_label.config(text="Wrong! The correct answer is: " + correct_side, fg="red")
+    score_label.config(text=f"{correct_answers} / {attempted_answers}")
     check_button.config(text="Next")
     check_button.focus_set()
     check_button.unbind('<Return>')
     check_button.bind('<Return>', handle_next)
     check_button.config(command=display_flashcard)
+    
 
 
 def swap_flashcard():
@@ -102,6 +108,11 @@ check_button.bind('<Return>', handle_check)
 # Label to display the result
 result_label = tk.Label(window, text="")
 result_label.pack(pady=10)
+
+# Label to display the score
+score_label = tk.Label(window, text="0 / 0")
+score_label.pack(pady=10)
+
 
 # Button to swap the front and back of the flashcard
 swap_button = tk.Button(window, text="Swap", command=swap_flashcard)
