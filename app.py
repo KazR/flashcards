@@ -1,6 +1,7 @@
 import pandas as pd
 import random
 import tkinter as tk
+from tkinter.filedialog import askopenfile
 
 # File path of the flashcards Excel file
 file_path = "data/TestCards.xlsx"
@@ -20,6 +21,11 @@ is_swapped = False
 correct_answers = 0
 attempted_answers = 0
 
+def load_excel():
+    file = askopenfile(mode ='r', filetypes =[('Excel files', '*.xlsx')])
+    global flashcards
+    flashcards = pd.read_excel(file.name)
+    print(file.name)
 
 def display_flashcard():
     global front, back, previous_card, correct_answers, attempted_answers
@@ -107,6 +113,10 @@ entry.bind('<Return>', handle_check)
 check_button = tk.Button(window, text="Check Answer", command=check_answer)
 check_button.pack(pady=10)
 check_button.bind('<Return>', handle_check)
+
+# Open file button
+open_button = tk.Button(window, text="Open file", command=load_excel)
+open_button.pack(pady=1)
 
 # Label to display the result
 result_label = tk.Label(window, text="", bg="#A2D2FF")
