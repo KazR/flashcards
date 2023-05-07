@@ -119,7 +119,6 @@ swap_button = tk.Button(window, text="Swap", command=swap_flashcard, bg="#FFC8DD
 swap_button.pack(pady=10)
 
 
-
 # Label to display the result
 result_label = tk.Label(window, text="", bg="#A2D2FF")
 result_label.pack(pady=10)
@@ -129,7 +128,7 @@ score_label = tk.Label(window, text="0 / 0", bg="#A2D2FF", font=("Helvetica", 10
 score_label.pack(pady=10)
 
 # Open file button
-open_button = tk.Button(window, text="Open File", command=swap_flashcard, bg="#FFC8DD", font=("Helvetica, 8"), activebackground="#FFAFCC")
+open_button = tk.Button(window, text="Open File", command=load_excel, bg="#FFC8DD", font=("Helvetica, 8"), activebackground="#FFAFCC")
 open_button.pack(pady=1)
 
 
