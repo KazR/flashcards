@@ -1,27 +1,28 @@
+#Authors
+#https://github.com/KazR
+#https://github.com/kiiroisenko786
+
 import pandas as pd
 import random
 import tkinter as tk
 from tkinter.filedialog import askopenfile
 from notepad import Notepad
-
 # File path of the flashcards Excel file
 file_path = "data/TestCards.xlsx"
-
 # Load the flashcards from the Excel file
 flashcards = pd.read_excel(file_path)
-
 # Create a Tkinter window
 window = tk.Tk()
 window.geometry("325x400")  # Set the window size to 400x400
 window.config(bg="#A2D2FF")
-
-# Declare the back variable as global
+# Declare Global Variables
 back = ""
 previous_card = None
 is_swapped = False
 correct_answers = 0
 attempted_answers = 0
 
+#   FUNCTIONS    ##########################################################################    
 def load_excel():
     file = askopenfile(mode ='r', filetypes =[('Excel files', '*.xlsx')])
     global flashcards
@@ -59,7 +60,6 @@ def display_flashcard():
     # Update the attempted answers counter
     attempted_answers += 1
 
-
 def check_answer():
     global back, is_swapped, correct_answers
     user_answer = entry.get().lower()
@@ -78,9 +78,7 @@ def check_answer():
     check_button.focus_set()
     check_button.unbind('<Return>')
     check_button.bind('<Return>', handle_next)
-    check_button.config(command=display_flashcard)
-    
-
+    check_button.config(command=display_flashcard)   
 
 def swap_flashcard():
     global front, back, is_swapped
@@ -90,10 +88,8 @@ def swap_flashcard():
     else:
         front_label.config(text=front)
 
-
 def handle_check(event):
     check_answer()
-
 
 def handle_next(event):
     display_flashcard()
@@ -104,6 +100,7 @@ def open_notepad():
     Notepad(notepad_window)
 
 
+#   BUTTONS    ##########################################################################    
 # Display the front label
 front_label = tk.Label(window)
 front_label.pack(pady=10)
