@@ -2,6 +2,7 @@ import pandas as pd
 import random
 import tkinter as tk
 from tkinter.filedialog import askopenfile
+from notepad import Notepad
 
 # File path of the flashcards Excel file
 file_path = "data/TestCards.xlsx"
@@ -11,7 +12,7 @@ flashcards = pd.read_excel(file_path)
 
 # Create a Tkinter window
 window = tk.Tk()
-window.geometry("325x350")  # Set the window size to 400x400
+window.geometry("325x400")  # Set the window size to 400x400
 window.config(bg="#A2D2FF")
 
 # Declare the back variable as global
@@ -24,12 +25,13 @@ attempted_answers = 0
 def load_excel():
     file = askopenfile(mode ='r', filetypes =[('Excel files', '*.xlsx')])
     global flashcards
-    flashcards = pd.read_excel(file.name)
-    print(file.name)
+    flashcard = file_path
+    if pd.read_excel != None:
+        flashcards = file_path
 
 def display_flashcard():
     global front, back, previous_card, correct_answers, attempted_answers
-    result_label.config(bg="#A2D2FF")
+    result_label.config(text = " ",font=("Helvetica", 12), bg="#A2D2FF")
     # Randomly select a row
     rows = flashcards.index.tolist()
     if previous_card is not None:
@@ -48,7 +50,7 @@ def display_flashcard():
     else:
         front_label.config(text=front, bg="#A2D2FF",fg="#FFFFFF", font=("Helvetica, 32"))
     entry.delete(0, tk.END)
-    result_label.config(text="")
+    result_label.config(text=" ")
     check_button.config(text="Check Answer", bg="#BDE0FE", fg="#123123", font=("Helvetica, 12"), activebackground="#A2D2FF")
     check_button.unbind('<Return>')
     check_button.bind('<Return>', handle_check)
@@ -61,7 +63,7 @@ def display_flashcard():
 def check_answer():
     global back, is_swapped, correct_answers
     user_answer = entry.get().lower()
-    result_label.config(font=("Helvetica", 12), bg="#A2D2FF")
+    result_label.config(text = " ",font=("Helvetica", 12), bg="#A2D2FF")
     if is_swapped:
         correct_side = front
     else:
@@ -97,6 +99,10 @@ def handle_next(event):
     display_flashcard()
     entry.focus_set()
 
+def open_notepad():
+    notepad_window = tk.Toplevel(window)
+    Notepad(notepad_window)
+
 
 # Display the front label
 front_label = tk.Label(window)
@@ -118,19 +124,20 @@ check_button.bind('<Return>', handle_check)
 swap_button = tk.Button(window, text="Swap", command=swap_flashcard, bg="#FFC8DD", font=("Helvetica, 12"), activebackground="#FFAFCC")
 swap_button.pack(pady=10)
 
-
 # Label to display the result
-result_label = tk.Label(window, text="", bg="#A2D2FF")
-result_label.pack(pady=10)
+result_label = tk.Label(window, text=" ", bg="#A2D2FF")
+result_label.pack()
 
 # Label to display the score
 score_label = tk.Label(window, text="0 / 0", bg="#A2D2FF", font=("Helvetica", 10))
 score_label.pack(pady=10)
 
 # Open file button
-open_button = tk.Button(window, text="Open File", command=load_excel, bg="#FFC8DD", font=("Helvetica, 8"), activebackground="#FFAFCC")
-open_button.pack(pady=1)
+open_button = tk.Button(window, text="Open Flashcard Excel File", command=load_excel, bg="#FFC8DD", font=("Helvetica, 8"), activebackground="#FFAFCC")
+open_button.pack(pady=10)
 
+open_notepad_button = tk.Button(window, text="Open Notepad", command=open_notepad, bg="#FFC8DD", font=("Helvetica, 8"), activebackground="#FFAFCC")
+open_notepad_button.pack()
 
 # Start the flashcard application
 display_flashcard()
